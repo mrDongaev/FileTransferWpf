@@ -1,0 +1,28 @@
+﻿<Window x:Class="FileTransferWpfApp.UserInterfaceClasses.UserWindows.TestingTransferMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileTransferWpfApp.UserInterfaceClasses.UserWindows"
+        mc:Ignorable="d"
+        Title="Testing Transfer Window" Height="450" Width="800">
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Используем ListBox для лучшей организации элементов -->
+        <ListBox Grid.Row="0">
+            <ListBoxItem Name="ListBItemSettingsBlocker" Background="LightGray" Margin="10"
+                         PreviewMouseLeftButtonDown="ListBItemSettingsBlockerPrevMouseLBut">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Create a random file and occupy it with a third-party thread"
+                               FontSize="16" FontWeight="Bold"
+                               Foreground="Black"
+                               TextAlignment="Center"
+                               Margin="10"/>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+    </Grid>
+</Window>
