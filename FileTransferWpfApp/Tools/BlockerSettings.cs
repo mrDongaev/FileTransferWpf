@@ -8,12 +8,12 @@ namespace FileTransferWpfApp.Tools
 {
     public class BlockerSettings
     {
-        string FileName { get; set; }
+        public string? FileName { get; set; }
 
-        string FilePath { get; set; }
+        public string? FilePath { get; set; }
 
-        string FileExtension { get; set; }
+        public string? FileExtension { get; set; }
 
-        string Time { get; set; }
+        public string? Time { get; set; }
     }
 }

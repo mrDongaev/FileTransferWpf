@@ -1,28 +1,25 @@
-﻿using System.Windows;
+﻿using FileTransferWpfApp.Tools;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 {
     public partial class BlockerSettingsWindow : Window
     {
+        BlockerSettings blockerSettings;
+
         public BlockerSettingsWindow()
         {
             InitializeComponent();
-        }
 
-        private void FileName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is TextBox textBox)
-            {
-                string fileName = textBox.Text;
-            }
+            blockerSettings = new BlockerSettings();
         }
 
         private void FilePath_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
-                string filePath = textBox.Text;
+                blockerSettings.FilePath += textBox.Text;
             }
         }
 
@@ -30,7 +27,7 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
         {
             if (sender is TextBox textBox)
             {
-                string timeInput = textBox.Text;
+                blockerSettings.Time += textBox.Text;
             }
         }
 
@@ -38,14 +35,14 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
         {
             if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem selectedItem)
             {
-                string selectedExtension = selectedItem.Content.ToString();
+                blockerSettings.FileExtension = selectedItem.Content.ToString();
             }
         }
         private void FileNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
             {
-                string fileName = textBox.Text;
+                blockerSettings.FileName = textBox.Text;
             }
         }
 
