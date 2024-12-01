@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="autofac" Version="8.1.1" />
     <PackageReference Include="NLog" Version="5.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tools\Factories\Managers\" />
   </ItemGroup>
 
 </Project>

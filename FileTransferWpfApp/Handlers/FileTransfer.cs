@@ -42,8 +42,6 @@ namespace FileTransferWpf.Handlers
             {
                 try
                 {
-                    InterfaceLogHandler.RefreshLog();
-
                     if (!Directory.Exists(DirectorySettings.MoveFromPath))
                     {
                         Thread.Sleep(2000);

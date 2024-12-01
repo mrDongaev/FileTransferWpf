@@ -37,6 +37,10 @@ namespace FileTransferWpf
             DataWarehouse.AllocateMemory();
 
             Watchers = [];
+
+            btnStart.IsEnabled = false;
+
+            BtnStartTransferClick();
         }
         public async Task StartPoint()
         {
@@ -81,6 +85,10 @@ namespace FileTransferWpf
         {
             btnStart.IsEnabled = false;
 
+            await StartPoint();
+        }
+        private async void BtnStartTransferClick() 
+        {
             await StartPoint();
         }
         private void ListBoxLogMouseDoubleClick(object sender, MouseButtonEventArgs e)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FileTransferWpf.Tools;
+using FileTransferWpfApp.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FileTransferWpfApp.Tools.DIServices;
+using Autofac;
 
 namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 {
@@ -19,28 +23,15 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
     /// </summary>
     public partial class DirectorySettingsWindow : Window
     {
+        CommonSettings CommonSettings { get; set; }
         public DirectorySettingsWindow()
         {
             InitializeComponent();
+
+            var commonSettingsService = DependencyConfig.Container.Resolve<CommonSettingsService>();
+
+            CommonSettings = commonSettingsService.GetCommonSettings();
         }
-
-        private void IncreasePathCount(object sender, RoutedEventArgs e)
-        {
-            int currentCount = int.Parse(PathCountTextBox.Text);
-
-            PathCountTextBox.Text = (currentCount + 1).ToString();
-        }
-
-        private void DecreasePathCount(object sender, RoutedEventArgs e)
-        {
-            int currentCount = int.Parse(PathCountTextBox.Text);
-
-            if (currentCount > 1)
-            {
-                PathCountTextBox.Text = (currentCount - 1).ToString();
-            }
-        }
-
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {
             // Очистим существующие элементы в ScrollViewer
@@ -61,6 +52,21 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 
             // Устанавливаем StackPanel как содержимое ScrollViewer
             DynamicPathInputsScrollViewer.Content = stackPanel;
+        }
+
+        private void DeviceNameTextBox_TextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void SourceFilePathTextBox_TextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void PathCountTextBox_TextInput(object sender, TextCompositionEventArgs e)
+        {
+
         }
 
         private void ButtonCreate_Click(object sender, RoutedEventArgs e)

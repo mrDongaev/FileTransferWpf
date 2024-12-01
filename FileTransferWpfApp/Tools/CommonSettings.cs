@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using FileTransferWpf.Data.Entity;
 using FileTransferWpf.Tools.Entity;
+using FileTransferWpfApp.UserInterfaceClasses.UserWindows;
 using NLog;
 
 
@@ -21,16 +22,16 @@ namespace FileTransferWpf.Tools
         public bool Visible { get; set; }
 
         #region
-        private static CommonSettings? instance;
-        public static CommonSettings Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new CommonSettings();
-                return instance;
-            }
-        }
+        //private static CommonSettings? instance;
+        //public static CommonSettings Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //            instance = new CommonSettings();
+        //        return instance;
+        //    }
+        //}
         #endregion
 
         public List<DirectorySettings> Directories { get; set; } = new List<DirectorySettings>();
@@ -59,7 +60,11 @@ namespace FileTransferWpf.Tools
                     });
 
                     DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его",
-                        DataWarehouse.ImportanceLogs.low));
+                        DataWarehouse.ImportanceLogs.medium));
+
+                    DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
+
+                    directorySettingsWindow.ShowDialog();
 
                     instance = new CommonSettings()
                     {
