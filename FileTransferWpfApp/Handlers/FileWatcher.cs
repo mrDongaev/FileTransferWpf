@@ -38,14 +38,14 @@ namespace FileTransferWpf.Handlers
                     //Если таймаут не настроен - периодически раз в час передергивать FileWatcher, тк исторически было зафиксировано его странное поведение
                     //_timer = new Timer(new TimerCallback(passiveFileWatcher), DirectorySettings, 1, 3600000);
                 }
-                DataWarehouse.screenLogs.Add(new ScreenLog((
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog((
                     $@"Запущен Watcher файлов [{DirectorySettings.FileFilterMask}] в папке [{DirectorySettings.MoveFromPath}]
     Перемещение в папки:
         {string.Join("\r\n\t", DirectorySettings.MoveToPaths)}"), DataWarehouse.ImportanceLogs.low));
             }
             catch (Exception ex)
             {
-                DataWarehouse.screenLogs.Add(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.low));
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.low));
 
                 RestartWatcher();
             }
@@ -55,7 +55,7 @@ namespace FileTransferWpf.Handlers
         /// </summary>
         private void PassiveFileWatcher()
         {
-            DataWarehouse.screenLogs.Add(new ScreenLog($"Запуск Watcher в автоматическом режиме"
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Запуск Watcher в автоматическом режиме"
     , DataWarehouse.ImportanceLogs.low));
 
             Logger.Info("Запуск Watcher в автоматическом режиме");
@@ -99,7 +99,7 @@ namespace FileTransferWpf.Handlers
 
         private void SystemWatcher_Error(object sender, ErrorEventArgs e)
         {
-            DataWarehouse.screenLogs.Add(new ScreenLog(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]", DataWarehouse.ImportanceLogs.low));
 
             Logger.Error(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]");
 
@@ -113,7 +113,7 @@ namespace FileTransferWpf.Handlers
 
             while (!Enabled)
             {
-                DataWarehouse.screenLogs.Add(new ScreenLog($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]"
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]"
                     , DataWarehouse.ImportanceLogs.low));
 
                 Logger.Warn($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]");
@@ -144,7 +144,7 @@ namespace FileTransferWpf.Handlers
             {
                 return;
             }
-            DataWarehouse.screenLogs.Add(new ScreenLog($"Start transferring file: [{filePath}]",
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Start transferring file: [{filePath}]",
     DataWarehouse.ImportanceLogs.low));
 
             Logger.Info($"Start transferring file: [{filePath}]");
@@ -217,7 +217,7 @@ namespace FileTransferWpf.Handlers
                     ProcessedFiles[filePath] = lastWriteDate;
                 }
             }
-            DataWarehouse.screenLogs.Add(new ScreenLog($"Processing complete: [{filePath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Processing complete: [{filePath}]", DataWarehouse.ImportanceLogs.low));
 
             Logger.Info($"Processing complete: [{filePath}]");
         }
@@ -241,7 +241,7 @@ namespace FileTransferWpf.Handlers
             {
                 if (!directoriesExist[destination])
                 {
-                    DataWarehouse.screenLogs.Add(new ScreenLog($"Directory: [{destination}] - not found", DataWarehouse.ImportanceLogs.low));
+                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Directory: [{destination}] - not found", DataWarehouse.ImportanceLogs.low));
 
                     Logger.Error($"Directory: [{destination}] - not found");
 
@@ -263,7 +263,7 @@ namespace FileTransferWpf.Handlers
 
                 File.Copy(filePath, dest, true);
             }
-            DataWarehouse.screenLogs.Add(new ScreenLog($"File was coppied success: [{filePath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"File was coppied success: [{filePath}]", DataWarehouse.ImportanceLogs.low));
 
             Logger.Info($"File was coppied success: [{filePath}]");
         }

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using FileTransferWpf.Data.Entity;
 using FileTransferWpf.Tools.Entity;
 using NLog;
+
 
 namespace FileTransferWpf.Tools
 {
@@ -39,7 +41,7 @@ namespace FileTransferWpf.Tools
         [XmlIgnore]
         public static string CurrentFile => Assembly.GetExecutingAssembly().Location;
 
-        public static bool LoadSettings()
+        public static async Task<bool> LoadSettings()
         {
             try
             {
@@ -50,8 +52,13 @@ namespace FileTransferWpf.Tools
                 string settingsFilePath = fileInfo.Directory + $"\\{Path.GetFileNameWithoutExtension(fileInfo.FullName)}Settings.xml";
 
                 if (!File.Exists(settingsFilePath))
-                {                  
-                    DataWarehouse.screenLogs.Add(new ScreenLog($"Файла настроек [{settingsFilePath}] не существует. Создание примера",
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        MessageBox.Show($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
+                    });
+
+                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его",
                         DataWarehouse.ImportanceLogs.low));
 
                     instance = new CommonSettings()
@@ -81,7 +88,7 @@ namespace FileTransferWpf.Tools
                 }
                 else
                 {
-                    DataWarehouse.screenLogs.Add(new ScreenLog($"Файл настроек [{settingsFilePath}] найден. Чтение настроек",
+                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файл настроек [{settingsFilePath}] найден. Чтение настроек",
                         DataWarehouse.ImportanceLogs.low));
 
                     using (Stream reader = new FileStream(settingsFilePath, FileMode.Open))

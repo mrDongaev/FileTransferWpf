@@ -22,7 +22,7 @@ namespace FileTransferWpfApp.Handlers
                 {
                     MainWindow.ListBoxLog?.Items.Clear();
 
-                    var screenLogsTemp = DataWarehouse.screenLogs.ToArray();
+                    var screenLogsTemp = DataWarehouse.InArray();
 
                     foreach (var item in screenLogsTemp)
                     {

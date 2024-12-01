@@ -10,6 +10,9 @@
     <Compile Update="UserInterfaceClasses\UserWindows\BlockerSettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserInterfaceClasses\UserWindows\DirectorySettingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserInterfaceClasses\UserWindows\TestingTransferMainWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserInterfaceClasses\UserWindows\BlockerSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserInterfaceClasses\UserWindows\DirectorySettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserInterfaceClasses\UserWindows\TestingTransferMainWindow.xaml">

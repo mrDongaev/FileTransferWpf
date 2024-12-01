@@ -34,7 +34,7 @@ namespace FileTransferWpf
 
             ListBoxLog = listBoxLog;
 
-            DataWarehouse.screenLogs = [];
+            DataWarehouse.AllocateMemory();
 
             Watchers = [];
         }
@@ -42,9 +42,9 @@ namespace FileTransferWpf
         {
             try
             {
-                DataWarehouse.screenLogs.Add(new ScreenLog("Приложение запущено в форме WPF", DataWarehouse.ImportanceLogs.low));
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog("Приложение запущено в форме WPF", DataWarehouse.ImportanceLogs.low));
 
-                if (CommonSettings.LoadSettings())
+                if (await CommonSettings.LoadSettings())
                 {
                     // Создаем список задач для параллельного выполнения
                     var tasks = new List<Task>();
@@ -63,14 +63,18 @@ namespace FileTransferWpf
             catch (Exception ex)
             {
                 // Логирование исключений
-                DataWarehouse.screenLogs.Add(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouse.ImportanceLogs.high));
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouse.ImportanceLogs.high));
                 throw;
             }
         }
 
         private void BtnExitClick(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
+
+            directorySettingsWindow.Show();
+
+            //System.Windows.Application.Current.Shutdown();
         }
 
         private async void BtnStartTransferClick(object sender, RoutedEventArgs e)

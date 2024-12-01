@@ -23,7 +23,7 @@ namespace FileTransferWpf.Handlers
         {
             DirectorySettings = directorySettings ?? throw new ArgumentNullException(nameof(directorySettings));
 
-            DataWarehouse.screenLogs.Add(new ScreenLog(
+            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
                 $"Запуск наблюдателя за файлами\n Директория для {directorySettings.DeviceName} \n Общее число настроек директорий {CommonSettings.Instance.Directories.Count}",
                 DataWarehouse.ImportanceLogs.low));
 
@@ -55,7 +55,7 @@ namespace FileTransferWpf.Handlers
 
                     if (countFiles > 0)
                     {
-                        DataWarehouse.screenLogs.Add(new ScreenLog(
+                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
                             $"Найдено {countFiles} в директории {DirectorySettings.MoveFromPath}",
                             DataWarehouse.ImportanceLogs.low));
                         await TransferFiles();
@@ -63,7 +63,7 @@ namespace FileTransferWpf.Handlers
                 }
                 catch (Exception ex)
                 {
-                    DataWarehouse.screenLogs.Add(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.high));
+                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.high));
                 }
 
                 // Ожидание перед следующей итерацией
@@ -94,14 +94,14 @@ namespace FileTransferWpf.Handlers
 
                         File.Copy(file, destFile, true);
 
-                        DataWarehouse.screenLogs.Add(new ScreenLog(
+                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
                             $"Файл {fileName} скопирован в {targetPath}",
                             DataWarehouse.ImportanceLogs.low));
 
                         // Удаление файла после копирования
                         File.Delete(file);
 
-                        DataWarehouse.screenLogs.Add(new ScreenLog(
+                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
                             $"Файл {fileName} удален из {sourcePath}",
                             DataWarehouse.ImportanceLogs.medium));
                     }
@@ -109,7 +109,7 @@ namespace FileTransferWpf.Handlers
             }
             catch (Exception ex)
             {
-                DataWarehouse.screenLogs.Add(new ScreenLog($"Ошибка копирования файлов: {ex.Message}", DataWarehouse.ImportanceLogs.high));
+                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Ошибка копирования файлов: {ex.Message}", DataWarehouse.ImportanceLogs.high));
             }
 
             await Task.CompletedTask;
