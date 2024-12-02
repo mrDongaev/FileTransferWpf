@@ -13,8 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using FileTransferWpfApp.Tools.DIServices;
 using Autofac;
+using System.IO;
 
 namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 {
@@ -23,14 +23,18 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
     /// </summary>
     public partial class DirectorySettingsWindow : Window
     {
-        CommonSettings CommonSettings { get; set; }
+        private CommonSettings _commonSettings;
+
+        private DirectorySettings _directorySettings;
+
         public DirectorySettingsWindow()
         {
+            _commonSettings = CommonSettings.Instance;
+
+            _directorySettings = new DirectorySettings();
+
             InitializeComponent();
 
-            var commonSettingsService = DependencyConfig.Container.Resolve<CommonSettingsService>();
-
-            CommonSettings = commonSettingsService.GetCommonSettings();
         }
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {
@@ -56,12 +60,12 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 
         private void DeviceNameTextBox_TextInput(object sender, TextCompositionEventArgs e)
         {
-
+            _directorySettings.DeviceName = e.Text;
         }
 
         private void SourceFilePathTextBox_TextInput(object sender, TextCompositionEventArgs e)
         {
-
+            _directorySettings.MoveFromPath = e.Text;
         }
 
         private void PathCountTextBox_TextInput(object sender, TextCompositionEventArgs e)

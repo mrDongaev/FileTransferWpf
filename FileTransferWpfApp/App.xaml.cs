@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using FileTransferWpfApp.Tools;
+using FileTransferWpfApp.Tools.Factories.Managers;
+using FileTransferWpfApp.Tools.Factories;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -13,13 +15,8 @@ namespace FileTransferWpf
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
-            DependencyConfig.Configure();
-
-            var mainWindow = DependencyConfig.Container.Resolve<MainWindow>();
-
-            mainWindow.Show();
+            CommonSettingsFactory commonSettingsFactory = new CommonSettingsFactory(/* передайте необходимые зависимости */);
+            CommonSettingsManager commonSettingsManager = new CommonSettingsManager(commonSettingsFactory);
         }
     }
 }

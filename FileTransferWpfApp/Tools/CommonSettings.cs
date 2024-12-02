@@ -22,16 +22,16 @@ namespace FileTransferWpf.Tools
         public bool Visible { get; set; }
 
         #region
-        //private static CommonSettings? instance;
-        //public static CommonSettings Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //            instance = new CommonSettings();
-        //        return instance;
-        //    }
-        //}
+        private static CommonSettings? instance;
+        public static CommonSettings Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new CommonSettings();
+                return instance;
+            }
+        }
         #endregion
 
         public List<DirectorySettings> Directories { get; set; } = new List<DirectorySettings>();
