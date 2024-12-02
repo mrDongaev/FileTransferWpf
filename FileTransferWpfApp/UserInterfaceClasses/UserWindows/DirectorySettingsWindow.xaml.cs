@@ -38,6 +38,7 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
         }
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {
+
             // Очистим существующие элементы в ScrollViewer
             DynamicPathInputsScrollViewer.Content = null;
 
@@ -50,6 +51,8 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
                 TextBox newPathTextBox = new TextBox();
 
                 newPathTextBox.Margin = new Thickness(0, 5, 0, 5);
+
+                newPathTextBox.TextChanged += ChangingTextInGeneratedPaths;
 
                 stackPanel.Children.Add(newPathTextBox);
             }
@@ -68,14 +71,18 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
             _directorySettings.MoveFromPath = e.Text;
         }
 
-        private void PathCountTextBox_TextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
         private void ButtonCreate_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void ChangingTextInGeneratedPaths(object sender, TextChangedEventArgs e) 
+        {
+            TextBox textBox = sender as TextBox;
+
+            if (textBox != null) 
+            {
+                _directorySettings.MoveToPaths
+            }
         }
     }
 }
