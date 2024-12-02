@@ -31,6 +31,8 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 
         private StackPanel _stackPanelInputPaths;
 
+        int counter = 0;
+
         public DirectorySettingsWindow()
         {
             _commonSettings = CommonSettings.Instance;
@@ -42,7 +44,7 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
         }
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {
-            if (NumericFieldValidation(sender, e)) 
+            if (NumericFieldValidation(PathCountTextBox.Text)) 
             {
                 // Очистим существующие элементы в ScrollViewer
                 DynamicPathInputsScrollViewer.Content = null;
@@ -71,19 +73,35 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
             };
         }
 
-        private void DeviceNameTextBox_TextInput(object sender, TextCompositionEventArgs e)
+        private void DeviceNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _directorySettings.DeviceName = e.Text;
+            TextBox textBox = sender as TextBox;
+
+            _directorySettings.DeviceName = textBox.Text;
+        }
+
+        private void DeviceNameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            _directorySettings.DeviceName += e.Text;
         }
 
         private void SourceFilePathTextBox_TextInput(object sender, TextCompositionEventArgs e)
         {
             _directorySettings.MoveFromPath = e.Text;
         }
+        private void SourceFilePathTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            _directorySettings.MoveFromPath = e.Text;
+        }
+
+        private void FileFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _directorySettings.FileFilterMask = e.AddedItems[0]?.ToString();
+        }
 
         private void ButtonCreate_Click(object sender, RoutedEventArgs e)
         {
-
+            _commonSettings.Directories.Add(_directorySettings);
         }
         private void ChangingTextInGeneratedPaths(object sender, TextChangedEventArgs e) 
         {
@@ -96,21 +114,17 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
                 _directorySettings.MoveToPaths[index] += textBox.Text;
             }
         }
-        public bool NumericFieldValidation(object sender, RoutedEventArgs e)
+        public bool NumericFieldValidation(string text)
         {
-            TextBox textBox = sender as TextBox;
-
-            if (textBox != null)
+            if (text != string.Empty)
             {
-                string input = textBox.Text;
-
                 //Related regular expression
-                if (!Regex.IsMatch(input, @"^\d+$")
-                    || string.IsNullOrEmpty(input))
+                if (!Regex.IsMatch(text, @"^\d+$")
+                    || string.IsNullOrEmpty(text))
                 {
                     MessageBox.Show("Проверьте правильность ввода числа перед генерацией!");
 
-                    textBox.Text = String.Empty;
+                    text = String.Empty;
 
                     return false;
                 }
@@ -121,7 +135,7 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
             }
             else 
             {
-                MessageBox.Show("Что-то не так с обьектом TextBox, он равен NULL");
+                MessageBox.Show("Что-то не так с обьектом TextBox, он равен Empty");
 
                 return false;
             }
