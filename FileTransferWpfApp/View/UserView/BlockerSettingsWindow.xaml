@@ -1,4 +1,4 @@
-﻿<Window x:Class="FileTransferWpfApp.UserInterfaceClasses.UserWindows.BlockerSettingsWindow"
+﻿<Window x:Class="FileTransferWpfApp.View.UserView.BlockerSettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Parameter blocker input" Height="450" Width="300"

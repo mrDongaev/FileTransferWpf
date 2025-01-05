@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileTransferWpfApp.Interfaces
+namespace FileTransferWpfApp.Model.ModelSettings
 {
-    public interface IValidationStrategy
+    public class HandlerSettings
     {
-        public bool NumericFieldValidation();
     }
 }

@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace FileTransferWpfApp.Interfaces
 {
-    public interface IValidationStrategy
+    public interface ICommand
     {
-        public bool NumericFieldValidation();
+        event EventHandler CanExecuteChanged;
+
+        void Execute(object parameter);
+
+        bool CanExecute(object parameter);
     }
 }

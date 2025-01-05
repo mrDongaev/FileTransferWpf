@@ -7,27 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UserInterfaceClasses\UserWindows\BlockerSettingsWindow.xaml.cs">
+    <Compile Update="View\UserView\BlockerSettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserInterfaceClasses\UserWindows\DirectorySettingsWindow.xaml.cs">
+    <Compile Update="View\UserView\DirectorySettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserInterfaceClasses\UserWindows\TestingTransferMainWindow.xaml.cs">
+    <Compile Update="View\UserView\TestingTransferMainWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="MainWindow.xaml">
+    <Page Update="View\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserInterfaceClasses\UserWindows\BlockerSettingsWindow.xaml">
+    <Page Update="View\UserView\BlockerSettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserInterfaceClasses\UserWindows\DirectorySettingsWindow.xaml">
+    <Page Update="View\UserView\DirectorySettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserInterfaceClasses\UserWindows\TestingTransferMainWindow.xaml">
+    <Page Update="View\UserView\TestingTransferMainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

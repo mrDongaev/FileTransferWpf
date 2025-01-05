@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileTransferWpf.Tools.Entity
+namespace FileTransferWpfApp.Model.ModelLogs
 {
     public static class Logger
     {

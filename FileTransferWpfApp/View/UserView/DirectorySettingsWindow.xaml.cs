@@ -1,6 +1,4 @@
-﻿using FileTransferWpf.Tools;
-using FileTransferWpfApp.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +15,9 @@ using Autofac;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using FileTransferWpfApp.Model.ModelSettings;
 
-namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
+namespace FileTransferWpfApp.View.UserView
 {
     /// <summary>
     /// Interaction logic for DirectorySettingsWindow.xaml
@@ -40,7 +39,6 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
             _directorySettings = new DirectorySettings();
 
             InitializeComponent();
-
         }
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {
@@ -101,7 +99,47 @@ namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
 
         private void ButtonCreate_Click(object sender, RoutedEventArgs e)
         {
-            _commonSettings.Directories.Add(_directorySettings);
+            var countInputPaths = _stackPanelInputPaths.Children.Count;
+
+            _directorySettings.MoveToPaths = new string[countInputPaths];
+
+            for (int i = 0; i < countInputPaths; i++)
+            {
+                TextBox textBox = _stackPanelInputPaths.Children[i] as TextBox;
+
+                if (textBox != null) 
+                {
+                    if (string.IsNullOrEmpty(textBox.Text) &&
+                        Directory.Exists(textBox.Text))
+                    {
+                        _directorySettings.MoveToPaths[i] = textBox.Text;
+                    }
+                    else 
+                    {
+                        MessageBox.Show("Путь не существует или к нему нет доступа!\n" +
+                            "Проверьте правильность ввода");
+                    }
+                }
+            }
+            //foreach (TextBox textBox in _stackPanelInputPaths.Children)
+            //{
+            //    string path = textBox.Text;
+
+            //    if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+            //    {
+                    
+            //        _commonSettings.Directories.Add(_directorySettings.MoveToPaths);
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show($"Путь '{path}' не является корректным или не существует.");
+            //        // Дополнительная логика обработки некорректного пути
+            //    }
+            //}
+            // Дополнительная логика после проверки всех путей
+
+
+            //_commonSettings.Directories.Add(_directorySettings);
         }
         private void ChangingTextInGeneratedPaths(object sender, TextChangedEventArgs e) 
         {

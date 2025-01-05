@@ -1,14 +1,12 @@
-﻿using FileTransferWpf.Data.Entity;
-using FileTransferWpf.Tools.Entity;
-using FileTransferWpf.Tools;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FileTransferWpfApp.Handlers;
+using FileTransferWpfApp.Model.ModelSettings;
+using FileTransferWpfApp.Model.ModelLogs;
 
-namespace FileTransferWpf.Handlers
+namespace FileTransferWpfApp.Model.ModelHandlers
 {
     public class FileTransfer
     {

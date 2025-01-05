@@ -1,10 +1,10 @@
 ﻿<Window Background="WhiteSmoke"
-        x:Class="FileTransferWpfApp.UserInterfaceClasses.UserWindows.DirectorySettingsWindow"
+        x:Class="FileTransferWpfApp.View.UserView.DirectorySettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileTransferWpfApp.UserInterfaceClasses.UserWindows"
+        xmlns:local="clr-namespace:FileTransferWpfApp.View.UserView"
         mc:Ignorable="d"
         Title="DirectorySettingsWindow" Height="450" Width="300">
 

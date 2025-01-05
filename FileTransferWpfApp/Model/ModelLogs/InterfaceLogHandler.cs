@@ -1,6 +1,4 @@
 ﻿using FileTransferWpf;
-using FileTransferWpf.Data.Entity;
-using FileTransferWpf.Tools.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using FileTransferWpfApp.ViewModel;
 
-namespace FileTransferWpfApp.Handlers
+namespace FileTransferWpfApp.Model.ModelLogs
 {
     public class InterfaceLogHandler
     {

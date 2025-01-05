@@ -13,4 +13,10 @@
     <PackageReference Include="NLog" Version="5.3.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="View\MainWindow.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
 </Project>

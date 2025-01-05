@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
-using FileTransferWpf.Data.Entity;
-using FileTransferWpf.Tools.Entity;
-using FileTransferWpfApp.UserInterfaceClasses.UserWindows;
+using FileTransferWpfApp.View.UserView;
+using FileTransferWpfApp.Model.ModelLogs;
 using NLog;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
-namespace FileTransferWpf.Tools
+namespace FileTransferWpfApp.Model.ModelSettings
 {
-    public class CommonSettings
+    public class CommonSettings : INotifyPropertyChanged
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         public bool Visible { get; set; }
@@ -110,6 +111,12 @@ namespace FileTransferWpf.Tools
                 return false;
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
     }
 }

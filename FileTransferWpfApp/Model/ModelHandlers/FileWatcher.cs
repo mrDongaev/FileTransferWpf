@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FileTransferWpf.Data.Entity;
-using FileTransferWpf.Tools;
-using FileTransferWpf.Tools.Entity;
+using FileTransferWpfApp.Model.ModelSettings;
+using FileTransferWpfApp.Model.ModelLogs;
 
-namespace FileTransferWpf.Handlers
+namespace FileTransferWpfApp.Model.ModelHandlers
 {
     public class FileWatcher : IDisposable
     {

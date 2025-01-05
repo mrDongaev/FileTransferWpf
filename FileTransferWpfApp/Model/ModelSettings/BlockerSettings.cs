@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileTransferWpfApp.Tools
+namespace FileTransferWpfApp.Model.ModelSettings
 {
     public class BlockerSettings
     {

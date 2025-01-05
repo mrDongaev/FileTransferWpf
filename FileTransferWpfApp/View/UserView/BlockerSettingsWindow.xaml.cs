@@ -1,8 +1,8 @@
-﻿using FileTransferWpfApp.Tools;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using FileTransferWpfApp.Model.ModelSettings;
 
-namespace FileTransferWpfApp.UserInterfaceClasses.UserWindows
+namespace FileTransferWpfApp.View.UserView
 {
     public partial class BlockerSettingsWindow : Window
     {

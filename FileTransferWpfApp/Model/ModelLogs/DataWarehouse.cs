@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FileTransferWpf.Tools.Entity;
-using FileTransferWpfApp.Handlers;
 
-namespace FileTransferWpf.Data.Entity
+namespace FileTransferWpfApp.Model.ModelLogs
 {
     public static class DataWarehouse
     {
