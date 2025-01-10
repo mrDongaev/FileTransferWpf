@@ -16,6 +16,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using FileTransferWpfApp.Model.ModelSettings;
+using FileTransferWpfApp.ViewModel;
 
 namespace FileTransferWpfApp.View.UserView
 {
@@ -34,11 +35,13 @@ namespace FileTransferWpfApp.View.UserView
 
         public DirectorySettingsWindow()
         {
+            InitializeComponent();
+
+            DataContext = new ApplicationViewModel();
+
             _commonSettings = CommonSettings.Instance;
 
             _directorySettings = new DirectorySettings();
-
-            InitializeComponent();
         }
         private void GeneratePathInputs(object sender, RoutedEventArgs e)
         {

@@ -17,24 +17,24 @@ namespace FileTransferWpfApp.Model.ModelLogs
 
         public static void RefreshLog()
         {
-                try
+            try
+            {
+                MainWindow.ListBoxLog?.Items.Clear();
+
+                var screenLogsTemp = DataWarehouse.InArray();
+
+                foreach (var item in screenLogsTemp)
                 {
-                    MainWindow.ListBoxLog?.Items.Clear();
+                    var listBoxItem = CreateListBoxItem(item);
 
-                    var screenLogsTemp = DataWarehouse.InArray();
-
-                    foreach (var item in screenLogsTemp)
-                    {
-                        var listBoxItem = CreateListBoxItem(item);
-
-                        MainWindow.ListBoxLog?.Items.Add(listBoxItem);
-                    }
+                    MainWindow.ListBoxLog?.Items.Add(listBoxItem);
                 }
-                catch (InvalidOperationException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
         private static ListBoxItem CreateListBoxItem(ScreenLog log)
         {

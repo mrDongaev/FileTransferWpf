@@ -17,7 +17,7 @@ using System.Runtime.CompilerServices;
 
 namespace FileTransferWpfApp.Model.ModelSettings
 {
-    public class CommonSettings : INotifyPropertyChanged
+    public class CommonSettings
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         public bool Visible { get; set; }
@@ -57,7 +57,8 @@ namespace FileTransferWpfApp.Model.ModelSettings
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        MessageBox.Show($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
+                        instance.OnMessageToShow($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
+                        //MessageBox.Show($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
                     });
 
                     DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его",
@@ -111,12 +112,17 @@ namespace FileTransferWpfApp.Model.ModelSettings
                 return false;
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<string> MessageToShow;
 
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        public event EventHandler<Window> WindowToShow;
+
+        private void OnMessageToShow(string message) 
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            MessageToShow?.Invoke(this, message);
+        }
+        private void OnWindowToShow(Window window) 
+        {
+            WindowToShow?.Invoke(this, window);
         }
     }
 }
