@@ -8,18 +8,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using FileTransferWpfApp.ViewModel;
+using FileTransferWpfApp.View;
 
 namespace FileTransferWpfApp.Model.ModelLogs
 {
-    public class InterfaceLogHandler
+    public class UiLogHandler
     {
-        public InterfaceLogHandler() { }
+        public UiLogHandler() { }
 
         public static void RefreshLog()
         {
             try
             {
-                MainWindow.ListBoxLog?.Items.Clear();
+                //MainWindow.ListBoxLog?.Items.Clear();
 
                 var screenLogsTemp = DataWarehouse.InArray();
 
@@ -27,7 +28,7 @@ namespace FileTransferWpfApp.Model.ModelLogs
                 {
                     var listBoxItem = CreateListBoxItem(item);
 
-                    MainWindow.ListBoxLog?.Items.Add(listBoxItem);
+                    //MainWindow.ListBoxLog?.Items.Add(listBoxItem);
                 }
             }
             catch (InvalidOperationException ex)

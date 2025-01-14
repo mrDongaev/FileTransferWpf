@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileTransferWpfApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,27 +7,30 @@ using System.Threading.Tasks;
 
 namespace FileTransferWpfApp.Model.ModelLogs
 {
-    public static class DataWarehouse
+    public class DataWarehouse
     {
-        private static List<ScreenLog> screenLogs;
+        private List<ScreenLog> screenLogs;
 
         public enum ImportanceLogs { high, medium, low }
 
-        public static void AddAndUpdateLogInterface(ScreenLog screenLog) 
+        private static DataWarehouse? instance;
+        
+        public static DataWarehouse? Instance 
         {
-            screenLogs.Add(screenLog);
-
-            InterfaceLogHandler.RefreshLog();
+            get 
+            {
+                if (instance == null)
+                {
+                    instance = new DataWarehouse();
+                }
+                return instance;
+            }
         }
-        public static ScreenLog[] InArray() 
-        {
-            return screenLogs.ToArray();
-        }
-        public static List<ScreenLog> AllocateMemory() 
-        {
-            screenLogs = [];
+        public event EventHandler<ScreenLog> ScreenLogAdded;
 
-            return screenLogs;
+        public void OnScreenLogAdded(ScreenLog screenLog) 
+        {
+            ScreenLogAdded?.Invoke(this, screenLog);
         }
     }
 }

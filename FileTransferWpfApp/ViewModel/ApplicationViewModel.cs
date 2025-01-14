@@ -53,7 +53,6 @@ namespace FileTransferWpfApp.ViewModel
                 }));
             }
         }
-
         public ApplicationViewModel() 
         {
             commonSettings = new CommonSettings();
@@ -84,6 +83,7 @@ namespace FileTransferWpfApp.ViewModel
         //            // Ожидаем завершения всех задач
         //            await Task.WhenAll(tasks);
         //        }
+        
         //    }
         //    catch (Exception ex)
         //    {
