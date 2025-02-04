@@ -9,6 +9,8 @@ namespace FileTransferWpfApp.Commands
 {
     public class RelayCommand : ICommand
     {
+        private Action executeWithOutObj;
+
         private Action<object> execute;
 
         private Func<object, bool> canExecute;
@@ -26,6 +28,12 @@ namespace FileTransferWpfApp.Commands
 
             this.canExecute = canExecute;
         }
+        public RelayCommand(Action execute, Func<object, bool> canExecute = null) 
+        {
+            executeWithOutObj = execute;
+
+            this.canExecute = canExecute;
+        }
 
         public bool CanExecute(object parameter) 
         {
@@ -38,3 +46,4 @@ namespace FileTransferWpfApp.Commands
         }
     }
 }
+

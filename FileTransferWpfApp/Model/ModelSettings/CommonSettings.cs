@@ -33,9 +33,8 @@ namespace FileTransferWpfApp.Model.ModelSettings
         {
             get
             {
-                if (instance == null)
-                    instance = new CommonSettings();
-                return instance;
+                instance ??= new CommonSettings();
+                    return instance;
             }
         }
         #endregion
