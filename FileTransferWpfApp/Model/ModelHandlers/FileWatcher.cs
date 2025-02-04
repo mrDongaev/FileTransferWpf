@@ -37,14 +37,14 @@ namespace FileTransferWpfApp.Model.ModelHandlers
                     //Если таймаут не настроен - периодически раз в час передергивать FileWatcher, тк исторически было зафиксировано его странное поведение
                     //_timer = new Timer(new TimerCallback(passiveFileWatcher), DirectorySettings, 1, 3600000);
                 }
-                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog((
+                DataWarehouseModel.AddUILog(new UILogModel((
                     $@"Запущен Watcher файлов [{DirectorySettings.FileFilterMask}] в папке [{DirectorySettings.MoveFromPath}]
     Перемещение в папки:
-        {string.Join("\r\n\t", DirectorySettings.MoveToPaths)}"), DataWarehouse.ImportanceLogs.low));
+        {string.Join("\r\n\t", DirectorySettings.MoveToPaths)}"), DataWarehouseModel.ImportanceLogs.low));
             }
             catch (Exception ex)
             {
-                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.low));
+                DataWarehouseModel.AddUILog(new UILogModel(ex.ToString(), DataWarehouseModel.ImportanceLogs.low));
 
                 RestartWatcher();
             }
@@ -54,10 +54,10 @@ namespace FileTransferWpfApp.Model.ModelHandlers
         /// </summary>
         private void PassiveFileWatcher()
         {
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Запуск Watcher в автоматическом режиме"
-    , DataWarehouse.ImportanceLogs.low));
+            DataWarehouseModel.AddUILog(new UILogModel($"Запуск Watcher в автоматическом режиме"
+    , DataWarehouseModel.ImportanceLogs.low));
 
-            Logger.Info("Запуск Watcher в автоматическом режиме");
+            LoggerModel.Info("Запуск Watcher в автоматическом режиме");
 
             try
             {
@@ -91,16 +91,16 @@ namespace FileTransferWpfApp.Model.ModelHandlers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                LoggerModel.Error(ex);
                 RestartWatcher();
             }
         }
 
         private void SystemWatcher_Error(object sender, ErrorEventArgs e)
         {
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouseModel.AddUILog(new UILogModel(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]", DataWarehouseModel.ImportanceLogs.low));
 
-            Logger.Error(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]");
+            LoggerModel.Error(e.GetException() + $"\r\n[{DirectorySettings.MoveFromPath}]");
 
             //if (Enabled) return;
             RestartWatcher();
@@ -112,10 +112,10 @@ namespace FileTransferWpfApp.Model.ModelHandlers
 
             while (!Enabled)
             {
-                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]"
-                    , DataWarehouse.ImportanceLogs.low));
+                DataWarehouseModel.AddUILog(new UILogModel($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]"
+                    , DataWarehouseModel.ImportanceLogs.low));
 
-                Logger.Warn($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]");
+                LoggerModel.Warn($"Возникла проблема. Производится переподключение к папке [{DirectorySettings.MoveFromPath}]");
 
                 Thread.Sleep(1000);
 
@@ -143,10 +143,10 @@ namespace FileTransferWpfApp.Model.ModelHandlers
             {
                 return;
             }
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Start transferring file: [{filePath}]",
-    DataWarehouse.ImportanceLogs.low));
+            DataWarehouseModel.AddUILog(new UILogModel($"Start transferring file: [{filePath}]",
+    DataWarehouseModel.ImportanceLogs.low));
 
-            Logger.Info($"Start transferring file: [{filePath}]");
+            LoggerModel.Info($"Start transferring file: [{filePath}]");
 
             DateTime lastWriteDate = File.GetLastWriteTimeUtc(filePath);
 
@@ -177,7 +177,7 @@ namespace FileTransferWpfApp.Model.ModelHandlers
                         {
                             string unavailableDirectories = string.Join("\r\n", directoriesExist.Where(kvp => !kvp.Value).Select(kvp => string.Format("[{0}]", kvp.Key)));
 
-                            Logger.Error($"Пути для копирования недоступны:\r\n{unavailableDirectories}");
+                            LoggerModel.Error($"Пути для копирования недоступны:\r\n{unavailableDirectories}");
 
                             return;
                         }
@@ -188,13 +188,13 @@ namespace FileTransferWpfApp.Model.ModelHandlers
                 }
                 catch (Exception)
                 {
-                    Logger.Warn($"Файл {filePath} занят другим процессом. Попытка копировать файл {numTries} из {DirectorySettings.MaxTries}");
+                    LoggerModel.Warn($"Файл {filePath} занят другим процессом. Попытка копировать файл {numTries} из {DirectorySettings.MaxTries}");
                     if (numTries > DirectorySettings.MaxTries)
                     {
                         if (RestartsCount > DirectorySettings.MaxRestartCount)
                         {
                             CorruptedFiles.Add(filePath, lastWriteDate);
-                            Logger.Warn($"Файл {filePath} с датой изменения {lastWriteDate} помещен в игнор.");
+                            LoggerModel.Warn($"Файл {filePath} с датой изменения {lastWriteDate} помещен в игнор.");
                             RestartsCount = 0;
                         }
 
@@ -216,9 +216,9 @@ namespace FileTransferWpfApp.Model.ModelHandlers
                     ProcessedFiles[filePath] = lastWriteDate;
                 }
             }
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Processing complete: [{filePath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouseModel.AddUILog(new UILogModel($"Processing complete: [{filePath}]", DataWarehouseModel.ImportanceLogs.low));
 
-            Logger.Info($"Processing complete: [{filePath}]");
+            LoggerModel.Info($"Processing complete: [{filePath}]");
         }
 
         private Dictionary<string, bool> CheckDirectoriesExist(out bool allDirectoriesAvailable)
@@ -240,9 +240,9 @@ namespace FileTransferWpfApp.Model.ModelHandlers
             {
                 if (!directoriesExist[destination])
                 {
-                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Directory: [{destination}] - not found", DataWarehouse.ImportanceLogs.low));
+                    DataWarehouseModel.AddUILog(new UILogModel($"Directory: [{destination}] - not found", DataWarehouseModel.ImportanceLogs.low));
 
-                    Logger.Error($"Directory: [{destination}] - not found");
+                    LoggerModel.Error($"Directory: [{destination}] - not found");
 
                     continue;
                 }
@@ -262,9 +262,9 @@ namespace FileTransferWpfApp.Model.ModelHandlers
 
                 File.Copy(filePath, dest, true);
             }
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"File was coppied success: [{filePath}]", DataWarehouse.ImportanceLogs.low));
+            DataWarehouseModel.AddUILog(new UILogModel($"File was coppied success: [{filePath}]", DataWarehouseModel.ImportanceLogs.low));
 
-            Logger.Info($"File was coppied success: [{filePath}]");
+            LoggerModel.Info($"File was coppied success: [{filePath}]");
         }
 
         /// <summary>

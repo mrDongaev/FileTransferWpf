@@ -12,7 +12,7 @@
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <ListBox Name="listBoxLog" Grid.Row="0"></ListBox>
+        <ListBox Name="listBoxLog" ItemsSource="{Binding LogMessage}" Grid.Row="0"></ListBox>
 
         <Grid Grid.Row="1" VerticalAlignment="Bottom" Height="50">
             <Grid.ColumnDefinitions>

@@ -6,18 +6,36 @@ using FileTransferWpfApp.View.UserView;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+
 
 namespace FileTransferWpfApp.ViewModel
 {
-    public class ApplicationViewModel
+    public class ApplicationViewModel : ViewModelBase
     {
         private CommonSettings commonSettings;
+
+        private ListBoxItem logMessage;
+
+        public ListBoxItem LogMessage 
+        {
+            get { return logMessage; }
+
+            set 
+            {
+                logMessage = value;
+
+                OnPropertyChanged(nameof(LogMessage));
+            }
+        }
 
         //Команда загрузки настроек
         private RelayCommand addCommand;
@@ -53,7 +71,6 @@ namespace FileTransferWpfApp.ViewModel
                 }));
             }
         }
-
         public ApplicationViewModel() 
         {
             commonSettings = new CommonSettings();
@@ -62,12 +79,35 @@ namespace FileTransferWpfApp.ViewModel
             {
                 MessageBox.Show(message);
             };
+            commonSettings.WindowToShow += (sender, window) =>
+            {
+                window.Show();
+            };
+            UILogHandlerModel.LogIsUpdated += (sender, e) =>
+            {
+                LogMessage = CreateListBoxItem(e);
+            };
+
+        }
+        private static ListBoxItem CreateListBoxItem(UILogModel log)
+        {
+            var listBoxItem = new ListBoxItem { Content = log.Message };
+
+            listBoxItem.Background = log.ImportanceLogs switch
+            {
+                DataWarehouseModel.ImportanceLogs.low => Brushes.LightGreen,
+                DataWarehouseModel.ImportanceLogs.high => Brushes.OrangeRed,
+                DataWarehouseModel.ImportanceLogs.medium => Brushes.Yellow,
+                _ => listBoxItem.Background
+            };
+
+            return listBoxItem;
         }
         //public async Task StartPoint()
         //{
         //    try
         //    {
-        //        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog("Приложение запущено в форме WPF", DataWarehouse.ImportanceLogs.low));
+        //        DataWarehouse.AddUILog(new ScreenLog("Приложение запущено в форме WPF", DataWarehouse.ImportanceLogs.low));
 
         //        if (await CommonSettings.LoadSettings())
         //        {
@@ -88,7 +128,7 @@ namespace FileTransferWpfApp.ViewModel
         //    catch (Exception ex)
         //    {
         //        // Логирование исключений
-        //        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouse.ImportanceLogs.high));
+        //        DataWarehouse.AddUILog(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouse.ImportanceLogs.high));
         //        throw;
         //    }
         //}

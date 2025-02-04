@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FileTransferWpfApp.Model.ModelLogs
 {
-    public static class Logger
+    public static class LoggerModel
     {
         private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 

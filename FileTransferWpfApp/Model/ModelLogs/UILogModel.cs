@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FileTransferWpfApp.Model.ModelLogs
 {
-    public class ScreenLog
+    public class UILogModel
     {
-        public DataWarehouse.ImportanceLogs ImportanceLogs { get; set; }
+        public DataWarehouseModel.ImportanceLogs ImportanceLogs { get; set; }
         public string Message { get; set; }
 
-        public ScreenLog() { }
+        public UILogModel() { }
 
-        public ScreenLog(string message, DataWarehouse.ImportanceLogs importanceLogs) 
+        public UILogModel(string message, DataWarehouseModel.ImportanceLogs importanceLogs) 
         {
             Message = message;
 

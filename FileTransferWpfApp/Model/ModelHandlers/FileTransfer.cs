@@ -21,9 +21,9 @@ namespace FileTransferWpfApp.Model.ModelHandlers
         {
             DirectorySettings = directorySettings ?? throw new ArgumentNullException(nameof(directorySettings));
 
-            DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
+            DataWarehouseModel.AddUILog(new UILogModel(
                 $"Запуск наблюдателя за файлами\n Директория для {directorySettings.DeviceName} \n Общее число настроек директорий {CommonSettings.Instance.Directories.Count}",
-                DataWarehouse.ImportanceLogs.low));
+                DataWarehouseModel.ImportanceLogs.low));
 
             // Инициализация таймера для периодического обновления
             _timer = new Timer(PassiveFileWatcher, null, TimeSpan.Zero, TimeSpan.FromHours(1));
@@ -51,15 +51,15 @@ namespace FileTransferWpfApp.Model.ModelHandlers
 
                     if (countFiles > 0)
                     {
-                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
+                        DataWarehouseModel.AddUILog(new UILogModel(
                             $"Найдено {countFiles} в директории {DirectorySettings.MoveFromPath}",
-                            DataWarehouse.ImportanceLogs.low));
+                            DataWarehouseModel.ImportanceLogs.low));
                         await TransferFiles();
                     }
                 }
                 catch (Exception ex)
                 {
-                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(ex.ToString(), DataWarehouse.ImportanceLogs.high));
+                    DataWarehouseModel.AddUILog(new UILogModel(ex.ToString(), DataWarehouseModel.ImportanceLogs.high));
                 }
 
                 // Ожидание перед следующей итерацией
@@ -90,22 +90,22 @@ namespace FileTransferWpfApp.Model.ModelHandlers
 
                         File.Copy(file, destFile, true);
 
-                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
+                        DataWarehouseModel.AddUILog(new UILogModel(
                             $"Файл {fileName} скопирован в {targetPath}",
-                            DataWarehouse.ImportanceLogs.low));
+                            DataWarehouseModel.ImportanceLogs.low));
 
                         // Удаление файла после копирования
                         File.Delete(file);
 
-                        DataWarehouse.AddAndUpdateLogInterface(new ScreenLog(
+                        DataWarehouseModel.AddUILog(new UILogModel(
                             $"Файл {fileName} удален из {sourcePath}",
-                            DataWarehouse.ImportanceLogs.medium));
+                            DataWarehouseModel.ImportanceLogs.medium));
                     }
                 }
             }
             catch (Exception ex)
             {
-                DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Ошибка копирования файлов: {ex.Message}", DataWarehouse.ImportanceLogs.high));
+                DataWarehouseModel.AddUILog(new UILogModel($"Ошибка копирования файлов: {ex.Message}", DataWarehouseModel.ImportanceLogs.high));
             }
 
             await Task.CompletedTask;

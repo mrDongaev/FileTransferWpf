@@ -19,7 +19,12 @@ namespace FileTransferWpfApp.Model.ModelSettings
 {
     public class CommonSettings
     {
+        private static string settingsFilePath = string.Empty;
+
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+
+        private static readonly XmlSerializer xmlSerializer = new(typeof(CommonSettings));
+
         public bool Visible { get; set; }
 
         #region
@@ -47,32 +52,54 @@ namespace FileTransferWpfApp.Model.ModelSettings
         {
             try
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(CommonSettings));
-
                 FileInfo fileInfo = new FileInfo(CurrentFile);
 
-                string settingsFilePath = fileInfo.Directory + $"\\{Path.GetFileNameWithoutExtension(fileInfo.FullName)}Settings.xml";
+                settingsFilePath = fileInfo.Directory + $"\\{Path.GetFileNameWithoutExtension(fileInfo.FullName)}Settings.xml";
 
                 if (!File.Exists(settingsFilePath))
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        instance.OnMessageToShow($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
-                        //MessageBox.Show($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его");
+                        instance?.OnMessageToShow(PhraseModel.GetPhrase(0));
                     });
 
-                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файла настроек [{settingsFilePath}] не существует. Давайте создадим его",
-                        DataWarehouse.ImportanceLogs.medium));
+                    DataWarehouseModel.AddUILog(new UILogModel(PhraseModel.GetPhrase(0),
+                        DataWarehouseModel.ImportanceLogs.medium));
+
+                    instance = GetDefaultSettings();
 
                     DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
 
-                    directorySettingsWindow.ShowDialog();
-
-                    instance = new CommonSettings()
+                    await Application.Current.Dispatcher.InvokeAsync(() => 
                     {
-                        Visible = true,
+                        instance.OnWindowToShow(directorySettingsWindow);
+                    });
 
-                        Directories = new List<DirectorySettings>()
+                    WriteDefaultSettings();
+
+                    return false;
+                }
+                else
+                {
+                    ReadSettings();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                return false;
+            }
+        }
+        private static CommonSettings GetDefaultSettings() 
+        {
+
+            instance = new CommonSettings()
+            {
+                Visible = true,
+
+                Directories = new List<DirectorySettings>()
                         {
                             new DirectorySettings()
                             {
@@ -85,33 +112,27 @@ namespace FileTransferWpfApp.Model.ModelSettings
                                 MoveToPaths = new string[] { @"C:\Users\RemAd\Documents\testpapka1" }
                             }
                         }
-                    };
-                    using (TextWriter writer = new StreamWriter(settingsFilePath))
-                    {
-                        xmlSerializer.Serialize(writer, instance);
-                    }
-
-                    return false;
-                }
-                else
-                {
-                    DataWarehouse.AddAndUpdateLogInterface(new ScreenLog($"Файл настроек [{settingsFilePath}] найден. Чтение настроек",
-                        DataWarehouse.ImportanceLogs.low));
-
-                    using (Stream reader = new FileStream(settingsFilePath, FileMode.Open))
-                    {
-                        instance = (CommonSettings)xmlSerializer.Deserialize(reader);
-                    }
-                }
-                return true;
-            }
-            catch (Exception ex)
+            };
+                return instance;
+        }
+        private static void WriteDefaultSettings() 
+        {
+            using (TextWriter writer = new StreamWriter(settingsFilePath))
             {
-                Logger.Error(ex);
-
-                return false;
+                xmlSerializer.Serialize(writer, instance);
             }
         }
+        private static void ReadSettings() 
+        {
+            DataWarehouseModel.AddUILog(new UILogModel(PhraseModel.GetPhrase(1),
+                DataWarehouseModel.ImportanceLogs.low));
+
+            using (Stream reader = new FileStream(settingsFilePath, FileMode.Open))
+            {
+                instance = (CommonSettings)xmlSerializer.Deserialize(reader);
+            }
+        }
+
         public event EventHandler<string> MessageToShow;
 
         public event EventHandler<Window> WindowToShow;
