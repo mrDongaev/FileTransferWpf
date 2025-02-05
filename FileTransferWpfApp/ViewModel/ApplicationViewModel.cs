@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,17 +24,17 @@ namespace FileTransferWpfApp.ViewModel
     {
         private CommonSettings commonSettings;
 
-        private ListBoxItem logMessage;
+        ListBox ListBoxLogTemp { get; set; }
 
-        public ListBoxItem LogMessage 
+        private ListBox listBoxLog;
+
+        public ListBox ListBoxLog
         {
-            get { return logMessage; }
-
-            set 
+            get { return listBoxLog; }
+            set
             {
-                logMessage = value;
-
-                OnPropertyChanged(nameof(LogMessage));
+                listBoxLog = value;
+                OnPropertyChanged(nameof(ListBoxLog));
             }
         }
 
@@ -48,32 +49,13 @@ namespace FileTransferWpfApp.ViewModel
                 { await CommonSettings.LoadSettings(); }));
             }
         }
-        public RelayCommand ChangeSettingsCommand 
-        {
-            get
-            {
-                return addCommand ?? (addCommand = new RelayCommand(async obj =>
-                { await CommonSettings.LoadSettings(); }));
-            }
-        }
-        public RelayCommand ShowWindow 
-        {
-            get
-            {
-                return addCommand ?? (addCommand = new RelayCommand(async obj =>
-                {
-                    if (obj is Window) 
-                    {
-                        var window = (Window)obj;
-
-                        window.Show();
-                    }
-                }));
-            }
-        }
         public ApplicationViewModel() 
         {
             commonSettings = new CommonSettings();
+
+            ListBoxLog = new ListBox();
+
+            ListBoxLogTemp = new ListBox();
 
             commonSettings.MessageToShow += (sender, message) =>
             {
@@ -85,7 +67,20 @@ namespace FileTransferWpfApp.ViewModel
             };
             UILogHandlerModel.LogIsUpdated += (sender, e) =>
             {
-                LogMessage = CreateListBoxItem(e);
+                var itemLog = CreateListBoxItem(e);
+
+                if (ListBoxLogTemp != null) 
+                {
+                    //ListBoxLogTemp.Items.Add(itemLog);
+
+                    ListBoxItem logItem = new ListBoxItem();
+
+                    logItem.Content = "Вот так";
+
+                    ListBoxLogTemp.Items.Add(logItem);
+
+                    ListBoxLog = ListBoxLogTemp;
+                }
             };
 
         }
@@ -107,7 +102,7 @@ namespace FileTransferWpfApp.ViewModel
         //{
         //    try
         //    {
-        //        DataWarehouse.AddUILog(new ScreenLog("Приложение запущено в форме WPF", DataWarehouse.ImportanceLogs.low));
+        //        DataWarehouseModel.AddUILog(new ScreenLog("Приложение запущено в форме WPF", DataWarehouseModel.ImportanceLogs.low));
 
         //        if (await CommonSettings.LoadSettings())
         //        {
@@ -124,12 +119,12 @@ namespace FileTransferWpfApp.ViewModel
         //            // Ожидаем завершения всех задач
         //            await Task.WhenAll(tasks);
         //        }
-        
+
         //    }
         //    catch (Exception ex)
         //    {
         //        // Логирование исключений
-        //        DataWarehouse.AddUILog(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouse.ImportanceLogs.high));
+        //        DataWarehouseModel.AddUILog(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouseModel.ImportanceLogs.high));
         //        throw;
         //    }
         //}

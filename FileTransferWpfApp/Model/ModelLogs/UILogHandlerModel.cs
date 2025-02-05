@@ -37,7 +37,7 @@ namespace FileTransferWpfApp.Model.ModelLogs
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    LogUpdate(uILogs[endingIndex]);
+                    LogUpdate(uILogs[endingIndex-1]);
                 });
             }
             catch (InvalidOperationException ex)

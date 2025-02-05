@@ -55,6 +55,10 @@ namespace FileTransferWpfApp.Model.ModelSettings
 
                 settingsFilePath = fileInfo.Directory + $"\\{Path.GetFileNameWithoutExtension(fileInfo.FullName)}Settings.xml";
 
+                instance = GetDefaultSettings();
+
+                DataWarehouseModel.AllocateMemory();
+
                 if (!File.Exists(settingsFilePath))
                 {
                     await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -64,8 +68,6 @@ namespace FileTransferWpfApp.Model.ModelSettings
 
                     DataWarehouseModel.AddUILog(new UILogModel(PhraseModel.GetPhrase(0),
                         DataWarehouseModel.ImportanceLogs.medium));
-
-                    instance = GetDefaultSettings();
 
                     DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
 
@@ -112,7 +114,7 @@ namespace FileTransferWpfApp.Model.ModelSettings
                             }
                         }
             };
-                return instance;
+            return instance;
         }
         private static void WriteDefaultSettings() 
         {
