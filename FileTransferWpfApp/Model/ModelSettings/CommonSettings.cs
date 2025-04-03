@@ -47,7 +47,7 @@ namespace FileTransferWpfApp.Model.ModelSettings
         [XmlIgnore]
         public static string CurrentFile => Assembly.GetExecutingAssembly().Location;
 
-        public static async Task<bool> LoadSettings()
+        public static bool LoadSettings()
         {
             try
             {
@@ -61,21 +61,17 @@ namespace FileTransferWpfApp.Model.ModelSettings
 
                 if (!File.Exists(settingsFilePath))
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        instance?.OnMessageToShow(PhraseModel.GetPhrase(0));
-                    });
+                    string strTemp = PhraseModel.GetPhrase(0);
 
                     DataWarehouseModel.AddUILog(new UILogModel(PhraseModel.GetPhrase(0),
                         DataWarehouseModel.ImportanceLogs.medium));
 
                     DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
 
-                    await Application.Current.Dispatcher.InvokeAsync(() => 
+                    if (instance?.WindowToShow != null) 
                     {
-                        instance.OnWindowToShow(directorySettingsWindow);
-                    });
-
+                        instance?.WindowToShow.Invoke(directorySettingsWindow, strTemp);
+                    }
                     WriteDefaultSettings();
 
                     return false;
@@ -133,18 +129,8 @@ namespace FileTransferWpfApp.Model.ModelSettings
                 instance = (CommonSettings)xmlSerializer.Deserialize(reader);
             }
         }
+        public delegate void WindowMessageHandler(Window window, string message);
 
-        public event EventHandler<string> MessageToShow;
-
-        public event EventHandler<Window> WindowToShow;
-
-        private void OnMessageToShow(string message) 
-        {
-            MessageToShow?.Invoke(this, message);
-        }
-        private void OnWindowToShow(Window window) 
-        {
-            WindowToShow?.Invoke(this, window);
-        }
+        public event WindowMessageHandler WindowToShow;
     }
 }

@@ -16,15 +16,6 @@ namespace FileTransferWpf
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            ApplicationViewModel viewModel = new();
-
-            MainWindow mainWindow = new()
-            {
-                DataContext = viewModel
-            };
-
-            viewModel.LoadSettingsCommand.Execute(this);
         }
     }
 }

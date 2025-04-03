@@ -16,6 +16,7 @@ using FileTransferWpfApp.View.UserView;
 using FileTransferWpfApp.Model.ModelHandlers;
 using FileTransferWpfApp.Model.ModelLogs;
 using FileTransferWpfApp.Model.ModelSettings;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FileTransferWpfApp.View
 {
@@ -24,9 +25,27 @@ namespace FileTransferWpfApp.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ApplicationViewModel viewModel;
         public MainWindow()
         {
             InitializeComponent();
+            
+            viewModel = new ApplicationViewModel();
+
+            viewModel.WindowToShow += ShowTempWindow;
+
+            DataContext = viewModel;
+
+            viewModel.LoadSettingsCommand.Execute(this);
+        }
+        public static void ShowTempWindow(Window window, string message) 
+        {
+            window.Show();
+        }
+
+        private void btnTestTransfer_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

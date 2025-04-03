@@ -22,8 +22,6 @@ namespace FileTransferWpfApp.ViewModel
 {
     public class ApplicationViewModel : ViewModelBase
     {
-        private CommonSettings commonSettings;
-
         ListBox ListBoxLogTemp { get; set; }
 
         private ListBox listBoxLog;
@@ -46,44 +44,43 @@ namespace FileTransferWpfApp.ViewModel
             get 
             {
                 return addCommand ?? (addCommand = new RelayCommand(async obj => 
-                { await CommonSettings.LoadSettings(); }));
+                { CommonSettings.LoadSettings(); }));
             }
         }
         public ApplicationViewModel() 
         {
-            commonSettings = new CommonSettings();
-
             ListBoxLog = new ListBox();
 
             ListBoxLogTemp = new ListBox();
 
-            commonSettings.MessageToShow += (sender, message) =>
-            {
-                MessageBox.Show(message);
-            };
-            commonSettings.WindowToShow += (sender, window) =>
-            {
-                window.Show();
-            };
+            //CommonSettings.Instance.WindowToShow += CommonSettingsEventHandler;
+
             UILogHandlerModel.LogIsUpdated += (sender, e) =>
             {
                 var itemLog = CreateListBoxItem(e);
 
                 if (ListBoxLogTemp != null) 
                 {
-                    //ListBoxLogTemp.Items.Add(itemLog);
-
                     ListBoxItem logItem = new ListBoxItem();
-
-                    logItem.Content = "Вот так";
 
                     ListBoxLogTemp.Items.Add(logItem);
 
                     ListBoxLog = ListBoxLogTemp;
                 }
             };
-
         }
+        public void FooTest() 
+        {
+            DirectorySettingsWindow directorySettingsWindow = new DirectorySettingsWindow();
+
+            WindowToShow.Invoke(directorySettingsWindow, "12343");
+        }
+
+        public void CommonSettingsEventHandler(Window window, string message)
+        {
+            WindowToShow?.Invoke(window, message);
+        }
+
         private static ListBoxItem CreateListBoxItem(UILogModel log)
         {
             var listBoxItem = new ListBoxItem { Content = log.Message };
@@ -98,35 +95,8 @@ namespace FileTransferWpfApp.ViewModel
 
             return listBoxItem;
         }
-        //public async Task StartPoint()
-        //{
-        //    try
-        //    {
-        //        DataWarehouseModel.AddUILog(new ScreenLog("Приложение запущено в форме WPF", DataWarehouseModel.ImportanceLogs.low));
+        public delegate void WindowMessageHandler(Window window, string message);
 
-        //        if (await CommonSettings.LoadSettings())
-        //        {
-        //            // Создаем список задач для параллельного выполнения
-        //            var tasks = new List<Task>();
-
-        //            foreach (var dirSets in CommonSettings.Instance.Directories)
-        //            {
-        //                FileTransfer fileTransfer = new(dirSets);
-
-        //                // Добавляем задачу в список
-        //                tasks.Add(fileTransfer.StartTransfer());
-        //            }
-        //            // Ожидаем завершения всех задач
-        //            await Task.WhenAll(tasks);
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Логирование исключений
-        //        DataWarehouseModel.AddUILog(new ScreenLog($"Ошибка в StartPoint: {ex.Message}", DataWarehouseModel.ImportanceLogs.high));
-        //        throw;
-        //    }
-        //}
+        public event WindowMessageHandler WindowToShow;
     }
 }

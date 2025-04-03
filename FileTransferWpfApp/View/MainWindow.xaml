@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Name="btnTestTransfer" Content="Testing the transfer for exceptions"
-                     Grid.Column="0"></Button>
+                     Grid.Column="0" Click="btnTestTransfer_Click"></Button>
             <Button Name="btnChangeSettings"
                     Content="Change settings" Grid.Column="1"></Button>
 
